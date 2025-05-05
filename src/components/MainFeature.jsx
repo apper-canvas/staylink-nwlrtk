@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { toast } from 'react-toastify'
 import getIcon from '../utils/iconUtils'
+import { useAuth } from '../context/AuthContext'
 
 // Icons
 const HotelIcon = getIcon('Hotel')
@@ -65,7 +66,8 @@ const HOTELS = [
 ];
 
 // Main Feature Component
-export default function MainFeature({ userRole, onRoleChange }) {
+export default function MainFeature() {
+  const { userRole } = useAuth();
   const [formData, setFormData] = useState({
     location: '',
     checkIn: '',
@@ -197,13 +199,6 @@ export default function MainFeature({ userRole, onRoleChange }) {
         amenities: [...prev.amenities, amenity.trim()]
       }))
     }
-  }
-  
-  // Change role handler
-  const handleChangeRole = () => {
-    onRoleChange(null)
-    setSelectedHotel(null)
-    setBooking(null)
   }
   
   // Traveler Interface
@@ -890,12 +885,6 @@ export default function MainFeature({ userRole, onRoleChange }) {
             </span>
           )}
         </h2>
-        <button 
-          onClick={handleChangeRole} 
-          className="text-primary hover:text-primary-dark text-sm underline"
-        >
-          Change Role
-        </button>
       </div>
       
       {userRole === 'hotel_owner' ? <HotelOwnerInterface /> : <TravelerInterface />}
